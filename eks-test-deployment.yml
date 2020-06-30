@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cluster-app
+  template:
+    metadata:
+      labels:
+        app: cluster-app
+    spec:
+      containers:
+      - name: cluster-app
+        image: 472274438117.dkr.ecr.ap-southeast-1.amazonaws.com/ekssampleapp:latest
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cluster-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: cluster-app
